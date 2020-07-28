@@ -17,6 +17,11 @@ public class DefaultTemplateFactory implements TemplateFactory {
     }
 
     @Override
+    public AzureFunctionsStaticTemplate getAzureFunctionsStaticTemplate() {
+        return AzureFunctionsStaticTemplate.getInstance();
+    }
+
+    @Override
     public ManagerTemplate getManagerTemplate() {
         return ManagerTemplate.getInstance();
     }

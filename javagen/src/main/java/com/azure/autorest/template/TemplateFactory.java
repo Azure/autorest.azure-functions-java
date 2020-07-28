@@ -8,6 +8,8 @@ public interface TemplateFactory {
 
     ServiceClientBuilderTemplate getServiceClientBuilderTemplate();
 
+    AzureFunctionsStaticTemplate getAzureFunctionsStaticTemplate();
+
     ManagerTemplate getManagerTemplate();
 
     MethodGroupInterfaceTemplate getMethodGroupInterfaceTemplate();

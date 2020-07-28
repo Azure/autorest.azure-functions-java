@@ -16,6 +16,12 @@ public class JavaFileFactory {
         this.settings = settings;
     }
 
+    public final JavaFile createEmptySourceFileWithNoType(String package_Keyword, String fileNameWithoutExtension) {
+        String folderPath = Paths.get("src", "main", "java", package_Keyword.replace('.', File.separatorChar)).toString();
+        String filePath = Paths.get(folderPath).resolve(String.format("%1$s", fileNameWithoutExtension)).toString().replace('\\', '/').replace("//", "/");
+        return new JavaFile(filePath);
+    }
+
     public final JavaFile createEmptySourceFile(String package_Keyword, String fileNameWithoutExtension) {
         String folderPath = Paths.get("src", "main", "java", package_Keyword.replace('.', File.separatorChar)).toString();
         String filePath = Paths.get(folderPath).resolve(String.format("%1$s.java", fileNameWithoutExtension)).toString().replace('\\', '/').replace("//", "/");

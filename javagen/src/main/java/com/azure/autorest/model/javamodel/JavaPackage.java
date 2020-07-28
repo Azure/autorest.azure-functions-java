@@ -124,6 +124,12 @@ public class JavaPackage {
         javaFiles.add(javaFile);
     }
 
+    public final void addAzureFunctionsFile(String package_Keyword, String name, String content) {
+        JavaFile javaFile = javaFileFactory.createEmptySourceFileWithNoType(package_Keyword, name);
+        Templates.getAzureFunctionsStaticTemplate().write(content, javaFile);
+        javaFiles.add(javaFile);
+    }
+
     // TODO: POM?
 //    public final void AddPom(PomTemplate pomTemplate)
 //    {

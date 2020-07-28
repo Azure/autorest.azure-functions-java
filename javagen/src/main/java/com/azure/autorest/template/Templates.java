@@ -27,6 +27,10 @@ public class Templates {
         return factory.getServiceClientBuilderTemplate();
     }
 
+    public static AzureFunctionsStaticTemplate getAzureFunctionsStaticTemplate() {
+        return factory.getAzureFunctionsStaticTemplate();
+    }
+
     public static ManagerTemplate getManagerTemplate() {
         return factory.getManagerTemplate();
     }
