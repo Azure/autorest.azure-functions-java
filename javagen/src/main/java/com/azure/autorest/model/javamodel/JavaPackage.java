@@ -13,6 +13,7 @@ import com.azure.autorest.model.clientmodel.ServiceClient;
 import com.azure.autorest.model.clientmodel.XmlSequenceWrapper;
 import com.azure.autorest.template.Templates;
 import java.util.ArrayList;
+import java.util.List;
 
 public class JavaPackage {
     private JavaSettings settings;
@@ -124,9 +125,15 @@ public class JavaPackage {
         javaFiles.add(javaFile);
     }
 
-    public final void addAzureFunctionsFile(String package_Keyword, String name, String content) {
+    public final void addAzureFunctionsStaticFile(String package_Keyword, String name, String content) {
         JavaFile javaFile = javaFileFactory.createEmptySourceFileWithNoType(package_Keyword, name);
         Templates.getAzureFunctionsStaticTemplate().write(content, javaFile);
+        javaFiles.add(javaFile);
+    }
+
+    public final void addAzureFunctionsFile(String package_Keyword, String name, List operations) {
+        JavaFile javaFile = javaFileFactory.createEmptySourceFile(package_Keyword, name.substring(0, 1).toUpperCase() + name.substring(1));
+        Templates.getAzureFunctionsTemplate().write(operations, javaFile, name, package_Keyword);
         javaFiles.add(javaFile);
     }
 

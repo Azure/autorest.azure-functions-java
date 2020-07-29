@@ -2,18 +2,13 @@ package com.azure.autorest;
 
 import com.azure.autorest.extension.base.jsonrpc.Connection;
 import com.azure.autorest.extension.base.model.codemodel.CodeModel;
+import com.azure.autorest.extension.base.model.codemodel.Operation;
 import com.azure.autorest.extension.base.plugin.JavaSettings;
-import com.azure.autorest.extension.base.plugin.JavaSettings.SyncMethodsGeneration;
 import com.azure.autorest.extension.base.plugin.NewPlugin;
 import com.azure.autorest.mapper.Mappers;
 import com.azure.autorest.model.clientmodel.Client;
-import com.azure.autorest.model.clientmodel.ClientException;
 import com.azure.autorest.model.clientmodel.ClientModel;
-import com.azure.autorest.model.clientmodel.ClientResponse;
 import com.azure.autorest.model.clientmodel.EnumType;
-import com.azure.autorest.model.clientmodel.MethodGroupClient;
-import com.azure.autorest.model.clientmodel.PackageInfo;
-import com.azure.autorest.model.clientmodel.XmlSequenceWrapper;
 import com.azure.autorest.model.javamodel.JavaFile;
 import com.azure.autorest.model.javamodel.JavaPackage;
 import org.slf4j.Logger;
@@ -25,7 +20,10 @@ import org.yaml.snakeyaml.nodes.Tag;
 import org.yaml.snakeyaml.representer.Representer;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class Javagen extends NewPlugin {
@@ -67,91 +65,49 @@ public class Javagen extends NewPlugin {
 
             // Step 3: Write to templates
             JavaPackage javaPackage = new JavaPackage();
-            // Service client
-//            javaPackage
-//                .addServiceClient(client.getServiceClient().getPackage(), client.getServiceClient().getClassName(),
-//                    client.getServiceClient());
-//
-//            if (JavaSettings.getInstance().shouldGenerateSyncAsyncClients()) {
-//                String asyncClassName =
-//                    client.getServiceClient().getClientBaseName().endsWith("Client") ? client.getServiceClient()
-//                        .getClientBaseName().replace("Client", "AsyncClient")
-//                        : client.getServiceClient().getClientBaseName() + "AsyncClient";
-//
-//                javaPackage.addAsyncServiceClient(JavaSettings.getInstance().getPackage(),
-//                    asyncClassName, client.getServiceClient());
-//
-//                // generate sync client only if the sync method generation param is set to ALL.
-//                if (SyncMethodsGeneration.ALL.equals(JavaSettings.getInstance().getSyncMethods())) {
-//                    String syncClassName =
-//                        client.getServiceClient().getClientBaseName().endsWith("Client") ? client.getServiceClient()
-//                            .getClientBaseName() : client.getServiceClient().getClientBaseName() + "Client";
-//                    javaPackage.addSyncServiceClient(JavaSettings.getInstance().getPackage(),
-//                        syncClassName, client.getServiceClient());
-//                }
-//            }
-
-//            if (JavaSettings.getInstance().shouldGenerateClientInterfaces()) {
-//                javaPackage
-//                    .addServiceClientInterface(client.getServiceClient().getInterfaceName(), client.getServiceClient());
-//            }
-
-            // Service client builder
-//            String builderPackage = client.getServiceClient().getPackage();
-//            if (JavaSettings.getInstance().shouldGenerateSyncAsyncClients()) {
-//                builderPackage = JavaSettings.getInstance().getPackage();
-//            }
-//            javaPackage.addServiceClientBuilder(builderPackage, client.getServiceClient().getInterfaceName() + "Builder",
-//                    client.getServiceClient());
-
-            // Method group
-//            for (MethodGroupClient methodGroupClient : client.getServiceClient().getMethodGroupClients()) {
-//                javaPackage.addMethodGroup(methodGroupClient.getPackage(), methodGroupClient.getClassName(),
-//                    methodGroupClient);
-//                if (JavaSettings.getInstance().shouldGenerateClientInterfaces()) {
-//                    javaPackage.addMethodGroupInterface(methodGroupClient.getInterfaceName(), methodGroupClient);
-//                }
-//            }
-
-            // Response
-//            for (ClientResponse response : client.getResponseModels()) {
-//                javaPackage.addClientResponse(response.getPackage(), response.getName(), response);
-//            }
 
             // Client model
             for (ClientModel model : client.getModels()) {
                 javaPackage.addModel(model.getPackage(), model.getName(), model);
             }
 
+            // Get Routs
+            List<Operation> opertations = codeModel.getOperationGroups().get(0).getOperations();
+            Map<String, List<Operation>> classFiles =new HashMap<String, List<Operation>>();
+            for(Operation o: opertations) {
+                String className = o.getRequests().get(0).getProtocol().getHttp().getPath().split("/")[1];
+                if(classFiles.get(className) != null) {
+                    List list = classFiles.get(className);
+                    list.add(o);
+                } else {
+                    List a = new ArrayList<Operation>();
+                    a.add(o);
+                    classFiles.put(className, a);
+                }
+            }
+
             // Enum
-//            for (EnumType enumType : client.getEnums()) {
-//                javaPackage.addEnum(enumType.getPackage(), enumType.getName(), enumType);
-//            }
+            for (EnumType enumType : client.getEnums()) {
+                javaPackage.addEnum(enumType.getPackage(), enumType.getName(), enumType);
+            }
 
             // Exception
 //            for (ClientException exception : client.getExceptions()) {
 //                javaPackage.addException(exception.getPackage(), exception.getName(), exception);
 //            }
 
-            // XML sequence wrapper
-//            for (XmlSequenceWrapper xmlSequenceWrapper : client.getXmlSequenceWrappers()) {
-//                javaPackage.addXmlSequenceWrapper(xmlSequenceWrapper.getPackage(),
-//                    xmlSequenceWrapper.getWrapperClassName(), xmlSequenceWrapper);
-//            }
-
-            // Package-info
-//            for (PackageInfo packageInfo : client.getPackageInfos()) {
-//                javaPackage.addPackageInfo(packageInfo.getPackage(), "package-info", packageInfo);
-//            }
-
-            File f = new File("./azure-functions");
-            String [] files1 = f.list();
-            for(String a: files1) {
-                String content = readFile("../azure-functions/" + a);
-                javaPackage.addAzureFunctionsFile(JavaSettings.getInstance().getPackage(), a, content);
+            for(String className: classFiles.keySet()) {
+                javaPackage.addAzureFunctionsFile(JavaSettings.getInstance().getPackage(), className, classFiles.get((className)));
             }
 
-            // TODO: POM, Manager
+            File staticFiles = new File("./azure-functions");
+            String [] staticFilesNames = staticFiles.list();
+            for(String a: staticFilesNames) {
+                String content = readFile("../azure-functions/" + a);
+                javaPackage.addAzureFunctionsStaticFile(JavaSettings.getInstance().getPackage(), a, content);
+            }
+
+
 
             //Step 4: Print to files
             for (JavaFile javaFile : javaPackage.getJavaFiles()) {

@@ -10,6 +10,8 @@ public interface TemplateFactory {
 
     AzureFunctionsStaticTemplate getAzureFunctionsStaticTemplate();
 
+    AzureFunctionsTemplate getAzureFunctionsTemplate();
+
     ManagerTemplate getManagerTemplate();
 
     MethodGroupInterfaceTemplate getMethodGroupInterfaceTemplate();
