@@ -71,10 +71,10 @@ AutoRest needs the below config to pick this up as a plug-in - see https://githu
 
 #### Javagen
 
-``` yaml $(java) && !$(fluent)
+``` yaml $(azure-functions-java) && !$(azure-functions-fluent)
 use: $(this-folder)/javagen
 ```
 
-``` yaml $(java) && $(fluent)
+``` yaml $(azure-functions-java) && $(azure-functions-fluent)
 use: $(this-folder)/fluentgen
 ```

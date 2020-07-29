@@ -7,7 +7,7 @@ pipeline:
 
 # --- extension remodeler ---
   javagen:
-    scope: java
+    scope: azure-functions-java
     input: preprocessor
     output-artifact: java-files
   
