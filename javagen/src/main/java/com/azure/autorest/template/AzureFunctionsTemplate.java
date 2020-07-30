@@ -62,10 +62,8 @@ public class AzureFunctionsTemplate implements IJavaTemplate<PackageInfo, JavaFi
                 javaFile.text("\t");
                 javaFile.line("final ExecutionContext context) {");
 
-
-
                 javaFile.text("\t");
-                javaFile.line("return null;}");
+                javaFile.line("request.createResponseBuilder(HttpStatus.OK).body(\"Success!\").build();}");
             }
         javaFile.line("}");
     }

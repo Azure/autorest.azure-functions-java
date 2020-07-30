@@ -1,6 +1,6 @@
 {
   "name": "@autorest/azure-functions-java",
-  "version": "0.0.1-Preview",
+  "version": "0.0.2-Preview",
   "description": "The Java extension for classic generators in AutoRest.",
   "scripts": {
     "autorest": "autorest",
