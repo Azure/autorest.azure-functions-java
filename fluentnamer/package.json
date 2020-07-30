@@ -1,6 +1,6 @@
 {
   "name": "@autorest/azure-functions-java.fluentnamer",
-  "version": "0.0.2-Preview",
+  "version": "0.0.3-Preview",
   "description": "The Java extension for fluentnamer in AutoRest.",
   "scripts": {
     "autorest": "autorest",

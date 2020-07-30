@@ -1,6 +1,6 @@
 {
   "name": "@autorest/azure-functions-java.preprocessor",
-  "version": "0.0.2-Preview",
+  "version": "0.0.3-Preview",
   "description": "The Java extension for preprocessor in AutoRest.",
   "scripts": {
     "autorest": "autorest",
