@@ -48,7 +48,7 @@ public class AzureFunctionsTemplate implements IJavaTemplate<PackageInfo, JavaFi
             comment.description(String.format("Azure Functions with HTTP Trigger."));
         });
 
-        String classNameCapital = className.substring(0, 1).toUpperCase() + className.substring(1);
+        String classNameCapital = className.substring(0, 1).toUpperCase() + className.substring(1) + "Functions";
         javaFile.line("public class " + classNameCapital + " {");
 
             for(Operation o: opertations) {
@@ -63,7 +63,7 @@ public class AzureFunctionsTemplate implements IJavaTemplate<PackageInfo, JavaFi
                 javaFile.line("final ExecutionContext context) {");
 
                 javaFile.text("\t");
-                javaFile.line("request.createResponseBuilder(HttpStatus.OK).body(\"Success!\").build();}");
+                javaFile.line("\t return request.createResponseBuilder(HttpStatus.OK).body(\"Success!\").build();\n\t}");
             }
         javaFile.line("}");
     }

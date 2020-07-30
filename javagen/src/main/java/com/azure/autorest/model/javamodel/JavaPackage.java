@@ -132,7 +132,7 @@ public class JavaPackage {
     }
 
     public final void addAzureFunctionsFile(String package_Keyword, String name, List operations) {
-        JavaFile javaFile = javaFileFactory.createEmptySourceFile(package_Keyword, name.substring(0, 1).toUpperCase() + name.substring(1));
+        JavaFile javaFile = javaFileFactory.createEmptySourceFile(package_Keyword, name.substring(0, 1).toUpperCase() + name.substring(1) + "Functions");
         Templates.getAzureFunctionsTemplate().write(operations, javaFile, name, package_Keyword);
         javaFiles.add(javaFile);
     }
