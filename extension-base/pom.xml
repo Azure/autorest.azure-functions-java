@@ -6,7 +6,7 @@
 
   <parent>
     <groupId>com.azure</groupId>
-    <artifactId>autorest-java</artifactId>
+    <artifactId>autorest-azurefunctions-java</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>

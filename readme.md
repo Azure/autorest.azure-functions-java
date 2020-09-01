@@ -1,4 +1,4 @@
-# Azyre Functions Java Autorest plugin.
+# Azure Functions' AutoRest plugin for Java.
 This is the AutoRest Java generator for Azure Functions. It's built on AutoRest v3, written in Java, and supports OpenAPI3. It generates Azure Functions apps.
 
 ## Prerequisites
@@ -7,6 +7,9 @@ You need to have the following installed on your machine:
 - Node.JS v10.x - v13.x
 - Java 8+
 - Maven 3.x
+
+_**Optional Prerequisites**_
+- Azure Functions Core Tools ([Details here](https://github.com/Azure/azure-functions-core-tools)) for running the created Function app.
 
 You need to have [autorest-beta](https://www.npmjs.com/package/@autorest/autorest) installed through NPM:
 
