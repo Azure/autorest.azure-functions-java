@@ -1,7 +1,7 @@
-# Overview
-This is the next gen (v4) of AutoRest Java generator. It's built on AutoRest v3, written in Java, and supports OpenAPI3. It generates clients that work with `com.azure:azure-core`.
+# Azyre Functions Java Autorest plugin.
+This is the AutoRest Java generator for Azure Functions. It's built on AutoRest v3, written in Java, and supports OpenAPI3. It generates Azure Functions apps.
 
-# Prerequisites
+## Prerequisites
 You need to have the following installed on your machine:
 
 - Node.JS v10.x - v13.x
@@ -14,44 +14,42 @@ You need to have [autorest-beta](https://www.npmjs.com/package/@autorest/autores
 npm i -g @autorest/autorest
 ```
 
-# Usage
+## Usage
 Clone this repo and checkout to v4 branch. Make sure all prerequisites are met, and run
 
 ```bash
 mvn package -Dlocal
 ```
 
-This will build a file `javagen-jar-with-dependencies.jar` under `javagen` module, a `preprocess-jar-with-dependencies.jar` under `preprocessor` module, a `fluentgen-jar-with-dependencies.jar` under `fluentgen` module, and a `fluentnamer--jar-with-dependencies.jar` under `fluentnamer` module.
-
-And then run AutoRest
+This will build a file `javagen-jar-with-dependencies.jar` under `javagen` module, a `preprocess-jar-with-dependencies.jar` under `preprocessor` module. And then run AutoRest
 
 ```bash
-autorest --java
-    --use:where/this/repo/is/cloned/autorest.java
+autorest --azure-functions-java
+    --use:where/this/repo/is/cloned/autorest.azure-functions-java
     --input-file:path/to/specs.json
     --output-folder:where/to/generate/java/files
     --namespace:specified.java.package
 ```
 
-Java files will be generated under `where/to/generate/java/files/src/main/java/specified/java/package`.
+Java files will be generated under `where/to/generate/java/files/src/main/java/specified/java/package`. 
 
 To debug, add `--java.debugger` to the argument list. The JVM will suspend at the beginning of the execution. Then attach a remote debugger in your IDE to `localhost:5005`. **Make sure you detach the debugger before killing the AutoRest process. Otherwise it will fail to shutdown the JVM and leave it orphaned. (which can be killed in the Task Manager)**
 
-# Project structure
-## extension-base
+## Project structure
+### extension-base
 This contains the base classes and utilities for creating an AutoRest extension in Java. It handles the JSON RPC communications with AutoRest core, provides JSON and YAML parsers, and provides the POJO models for the code model output from [modelerfour](https://github.com/Azure/autorest.modelerfour/).
 
 Extend from `NewPlugin.java` class if you are writing a new extension in Java.
 
-## javagen
-This contains the actually generator extension, including mappers that maps a code model to a Java client model, and templates that writes the Java client models into .java files.
+### javagen
+This contains the actually generator extension, including mappers that maps a code model to a Java server models, and templates that writes the Azure Fucntions Java client models into .java files.
 
-## tests
+### tests
 This contains the generated classes from the [test swaggers](https://github.com/Azure/autorest.testserver/tree/master/swagger) in `src/main`. The code here should always be kept up-to-date with the output of the generator in `javagen`. 
 
 This also contains test code for these generated code under `src/test`. Running the tests will hit the test server running locally (see https://github.com/Azure/autorest.testserver for instructions) and verify the correctness of the generated code.
 
-# Contributing
+## Contributing
 
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a
 Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
@@ -65,16 +63,12 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
 contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
 
-### Autorest plugin configuration
+## Autorest plugin configuration
 - Please don't edit this section unless you're re-configuring how the powershell extension plugs in to AutoRest
-AutoRest needs the below config to pick this up as a plug-in - see https://github.com/Azure/autorest/blob/master/docs/developer/architecture/AutoRest-extension.md
+AutoRest needs the below config to pick this up as a plug-in - see [AutoRest-extension.md](https://github.com/Azure/autorest/blob/master/docs/developer/architecture/AutoRest-extension.md) for more information on extension model.
 
-#### Javagen
+### Javagen
 
-``` yaml $(azure-functions-java) && !$(azure-functions-fluent)
+``` yaml
 use: $(this-folder)/javagen
-```
-
-``` yaml $(azure-functions-java) && $(azure-functions-fluent)
-use: $(this-folder)/fluentgen
 ```

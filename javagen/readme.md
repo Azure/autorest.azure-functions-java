@@ -1,11 +1,9 @@
-#### Javagen
+# Javagen
 
 ``` yaml
 use: $(this-folder)/../preprocessor
 
 pipeline:
-
-# --- extension remodeler ---
   javagen:
     scope: azure-functions-java
     input: preprocessor

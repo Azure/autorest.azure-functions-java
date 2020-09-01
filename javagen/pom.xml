@@ -68,7 +68,7 @@
                 <configuration>
                   <archive>
                     <manifest>
-                      <mainClass>com.azure.autorest.Main</mainClass>
+                      <mainClass>com.azure.autorest.azurefunctions.Main</mainClass>
                     </manifest>
                   </archive>
                   <descriptorRefs>
