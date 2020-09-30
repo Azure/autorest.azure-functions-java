@@ -89,16 +89,13 @@ public class Javagen extends NewPlugin {
             for (EnumType enumType : client.getEnums()) {
                 javaPackage.addEnum(enumType.getPackage(), enumType.getName(), enumType);
             }
-
-            // Exception
-//            for (ClientException exception : client.getExceptions()) {
-//                javaPackage.addException(exception.getPackage(), exception.getName(), exception);
-//            }
-
+            
             for(String className: classFiles.keySet()) {
                 javaPackage.addAzureFunctionsFile(JavaSettings.getInstance().getPackage(), className, classFiles.get((className)));
             }
+
             Map<String,String> staticFiles = new HashMap<String,String>();
+
             staticFiles.put("pom.xml", String.format("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n" +
                     "<project xmlns=\"http://maven.apache.org/POM/4.0.0\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd\">\n" +
                     "    <modelVersion>4.0.0</modelVersion>\n" +
@@ -231,6 +228,7 @@ public class Javagen extends NewPlugin {
                     "                                    <directory>${project.basedir}</directory>\n" +
                     "                                    <includes>\n" +
                     "                                        <include>host.json</include>\n" +
+                    "                                        <include>.autorest_generated.json</include>\n" +
                     "                                        <include>local.settings.json</include>\n" +
                     "                                    </includes>\n" +
                     "                                </resource>\n" +
@@ -276,6 +274,12 @@ public class Javagen extends NewPlugin {
                     "        </plugins>\n" +
                     "    </build>\n" +
                     "</project>\n", JavaSettings.getInstance().getPackage(), client.getClientName(), client.getClientName()));
+
+            staticFiles.put(".autorest_generated.json", "{\n" +
+                    "    \"name\": \"@autorest/azure-functions-java\"," +
+                    "    \"version\": \"0.2.0-preview\"" +
+                    "}");
+            
             if(getStringValue("generate-metadata") == null || getStringValue("generate-metadata").toLowerCase()!="false") {
                 staticFiles.put("host.json", "{\n" +
                         "    \"version\": \"2.0\",\n" +

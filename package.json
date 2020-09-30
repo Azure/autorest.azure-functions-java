@@ -1,7 +1,7 @@
 {
   "name": "@autorest/azure-functions-java",
-  "version": "0.0.2-Preview",
-  "description": "The Java extension for classic generators in AutoRest.",
+  "version": "0.2.0-Preview",
+  "description": "The Azure Functions extension for Java code generators in AutoRest.",
   "scripts": {
     "autorest": "autorest",
     "start": "java -jar javagen/target/javagen-jar-with-dependencies.jar",
@@ -22,9 +22,9 @@
   "author": "Microsoft Corporation",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Azure/autorest/issues"
+    "url": "https://github.com/Azure/autorest.azure-functions/issues"
   },
-  "homepage": "https://github.com/Azure/autorest.java/blob/master/README.md",
+  "homepage": "https://github.com/Azure/autorest.azure-functions-java/",
   "devDependencies": {
     "autorest": "^3.0.0",
     "@microsoft.azure/autorest.testserver": "^2.10.14"
